@@ -1,0 +1,6 @@
+{
+  "id": "comments",
+  "name": "Comments",
+  "srcdoc": "index.html",
+  "fieldTypes": ["Object"]
+}

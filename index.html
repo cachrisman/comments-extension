@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <title>Comments</title>
+  <style>
+    .container {
+      padding: 25px;
+      position: fixed;
+      left: 25%;
+    }
+
+    li.ui-state-default {
+      background: #fff0;
+      border: none;
+      border-bottom: 1px solid #ddd;
+      text-align: left;
+      padding-bottom: 10px;
+    }
+
+    li.ui-state-default:last-child {
+      border-bottom: none;
+    }
+
+    @import url(http://fonts.googleapis.com/css?family=Roboto:400);
+    body {
+      background-color: #fff;
+      -webkit-font-smoothing: antialiased;
+      font: normal 14px Roboto, arial, sans-serif;
+    }
+
+    .btn,
+    .form-control,
+    .well {
+      border-radius: 1px;
+      box-shadow: 0 0 0;
+    }
+
+    .form-control {
+      border-color: #d7d7d7;
+    }
+
+    .btn-primary {
+      border-color: transparent;
+    }
+
+    .btn-primary,
+    .list-group-item.active:focus {
+      background-color: #4285f4;
+    }
+
+    .btn-plus {
+      background-color: #ffffff;
+      border-width: 1px;
+      border-color: #dddddd;
+      box-shadow: 1px 1px 0 #999999;
+      border-radius: 3px;
+      color: #666666;
+      text-shadow: 0 0 1px #bbbbbb;
+    }
+
+    .well,
+    .panel {
+      border-color: #d2d2d2;
+      box-shadow: 0 1px 0 #cfcfcf;
+      border-radius: 3px;
+    }
+
+    hr {
+      border-color: #ececec;
+    }
+
+    button {
+      outline: 0;
+    }
+
+    .btn span {
+      color: #666666;
+    }
+
+    .list-group-item:first-child,
+    .list-group-item:last-child {
+      border-radius: 0;
+    }
+
+    h3 {
+      border: 0 solid #efefef;
+      border-bottom-width: 1px;
+      padding-bottom: 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="col-lg-4 col-sm-6 text-center">
+      <div class="input-group">
+        <input type="text" id="comment-input" class="form-control input-sm chat-input" placeholder="Write your comment here..." />
+        <span class="input-group-btn" onclick="addComment()">
+          <a href="#" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-comment"></span> Add Comment</a>
+        </span>
+      </div>
+      <div id="comments-list" class="list-group">
+      </div>
+    </div>
+  </div>
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/contentful-ui-extensions-sdk@latest"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+  <script type="text/template" id="comment-template">
+    <div class="list-group-item list-group-item-action flex-column align-items-start">
+      <p class="mb-1 comment"><%= text %></p>
+      <div class="d-flex w-100 justify-content-between">
+        <h5 class="mb-1 user"><%= user %></h5>
+        <small class="time"><%= time %></small>
+      </div>
+    </div>
+  </script>
+  <script type='text/javascript'>
+    $(function() {
+    window.contentfulExtension.init(function(extension) {
+      window.comments_extension = extension
+      extension.window.startAutoResizer()
+
+      var $commentsContainer = $("#comments-list");
+      var commentTemplate = _.template($("#comment-template").html());
+
+      function getFieldValue() {
+        let value = extension.field.getValue()
+        let comments = value.comments
+        _(comments).each((comment) => $commentsContainer.append(commentTemplate(comment)))
+      }
+
+      function addComment() {
+        let comment = {}
+        comment.text = document.getElementById("comment-input").value
+        comment.time =
+        comment.user =
+        $commentsContainer.append(commentTemplate(comment))
+      }
+    });
+});
+  </script>
+</body>
+
+</html>
